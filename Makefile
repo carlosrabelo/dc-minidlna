@@ -1,25 +1,32 @@
-PROJECT := carlosrabelo
-LATEST  := carlosrabelo/minidlna:latest
-CURRENT := carlosrabelo/minidlna:1.0
+NAME    := carlosrabelo/minidlna
 
-restart: stop start
+LATEST  := ${NAME}:latest
+CURRENT := ${NAME}:1.0
 
-start:
-	@docker-compose -p $(PROJECT) up -d
+PROJECT := home
 
-stop:
-	@docker-compose -p $(PROJECT) down
+all:
+
+clean:
+	@docker rmi -f ${LATEST}
+	@docker rmi -f ${CURRENT}
+
+build:
+	@docker build -t ${CURRENT} .
+
+tag:
+	@docker tag ${CURRENT} ${LATEST}
+
+push:
+	docker push -a ${CURRENT}
 
 config:
 	@docker-compose config
 
-clean:
-	@docker rmi -f $(LATEST)
-	@docker rmi -f $(CURRENT)
+start:
+	@docker-compose -p ${PROJECT} up -d
 
-build:
-	@docker build -t $(CURRENT) .
-	@docker tag ${CURRENT} ${LATEST}
+stop:
+	@docker-compose -p ${PROJECT} down
 
-push:
-	docker push $(CURRENT)
+restart: stop start

@@ -1,6 +1,7 @@
 FROM alpine:3.14.0
 
 LABEL maintainer Carlos Rabelo "developer@carlosrabelo.com.br"
+LABEL version "1.0"
 
 RUN apk --no-cache add minidlna
 
